@@ -40,7 +40,7 @@ public class EmployeeController {
 	public List<User> dueDateExpiredCustomers() {
 		
 		
-		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	        String date = "2019-06-05";
 

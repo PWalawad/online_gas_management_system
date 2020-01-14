@@ -33,14 +33,16 @@ public class EmployeeDao implements IEmployeeDao {
 	public List<User> displayDueDateExpiredCustomers(LocalDate endDate) 
 	{
 		
-		String jpql="select b Bill b where b.endDate >:endDate";
+		String jpql="select b from Bill b where b.endDate > :endDate";
 		List<Bill> user_id=sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("endDate", endDate).getResultList();
 		List<User> expiredUser=new ArrayList<>();
+		
 		for (Bill bills : user_id)
 		{
-		  String jpql2="select u from User u where u.bills=:bills";
-		  User u=sf.getCurrentSession().createQuery(jpql2,User.class).setParameter("bills", bills).getSingleResult();
-		  expiredUser.add(u);
+			expiredUser.add(bills.getUserBillDeatils());
+//		  String jpql2="select u from User u where u.bills = :bills";
+//		  User u=sf.getCurrentSession().createQuery(jpql2,User.class).setParameter("bills", bills.getEndDate()).getSingleResult();
+//		  expiredUser.add(u);
          }
 		return expiredUser;
 	}
