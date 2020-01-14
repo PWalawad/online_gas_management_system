@@ -111,14 +111,14 @@ public class Bill {
 
 
 
-	public Bill(Integer billNo, float amount, LocalDate startDate, LocalDate endDate, LocalDate dueDate, User userBillDeatils) {
+	public Bill(Integer billNo, float amount, LocalDate startDate, LocalDate endDate, LocalDate dueDate) {
 		super();
 		this.billNo = billNo;
 		this.amount = amount;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.dueDate = dueDate;
-		this.userBillDeatils = userBillDeatils;
+		
 	}
 
 

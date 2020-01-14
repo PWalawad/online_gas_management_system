@@ -45,8 +45,6 @@ public class EmployeeDao implements IEmployeeDao {
 		return expiredUser;
 	}
 
-	
-
 	@Override
 	public User displaySingleCustomer(int id) {
 		String jpql="select u from User u where u.id=:id";
