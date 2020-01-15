@@ -96,6 +96,7 @@ public class EmployeeController {
 		entity.setStartDate(b.getStartDate());
 		entity.setDueDate(b.getDueDate());
 		entity.setEndDate(b.getEndDate());
+		entity.setStatus("pending");
 		User persistedUser = dao.displaySingleCustomer(id);
 		persistedUser.addBill(entity);
 		dao.insertNextMonthBill(persistedUser);

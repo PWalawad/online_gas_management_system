@@ -18,6 +18,7 @@ public class BillModel {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private LocalDate dueDate;
+	private String status;
 
 	public Integer getBillNo() {
 		return billNo;
@@ -38,6 +39,12 @@ public class BillModel {
 	public LocalDate getDueDate() {
 		return dueDate;
 	}
+	
+
+	public String getStatus() {
+		return status;
+	}
+
 
 	/*
 	 * ========================================= Setters
@@ -63,5 +70,10 @@ public class BillModel {
 	public void setDueDate(LocalDate dueDate) {
 		this.dueDate = dueDate;
 	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 
 }

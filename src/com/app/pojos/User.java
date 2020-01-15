@@ -132,9 +132,7 @@ public class User
 		this.bills = bills;
 	}
 
-	public void setBank(Bankdeatils bank) {
-		this.bank = bank;
-	}
+	
 	
 	@Override
 	public String toString() {
@@ -162,6 +160,7 @@ public class User
 	/*
 	 * Adder and remover Methods
 	 */
+	
 
 	public void addAddress(Address a) {
 		// student ---> address
@@ -181,7 +180,7 @@ public class User
 
 	}
 
-	public void removeStudent(Bill b) {
+	public void removeBill(Bill b) {
 		bills.remove(b);
 		b.setUserBillDeatils(null);
 	}

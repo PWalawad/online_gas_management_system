@@ -2,7 +2,7 @@ package com.app.pojos;
 
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 import javax.persistence.*;
 
@@ -18,12 +18,18 @@ public class Bill {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private LocalDate dueDate;
+	private String status;
+	private LocalDate paymentDoneDate;
 	
 	//mapping 
     private User userBillDeatils;
 		
     
 		
+		public LocalDate getPaymentDoneDate() {
+		return paymentDoneDate;
+	}
+
 		@ManyToOne
 		@JoinColumn(name = "id")
 		@JsonIgnore
@@ -42,6 +48,10 @@ public class Bill {
 
 	public float getAmount() {
 		return amount;
+	}
+
+	public String getStatus() {
+		return status;
 	}
 
 	
@@ -76,6 +86,9 @@ public class Bill {
 
 	public void setAmount(float amount) {
 		this.amount = amount;
+	}
+	public void setPaymentDoneDate(LocalDate paymentDoneDate) {
+		this.paymentDoneDate = paymentDoneDate;
 	}
 
 
@@ -131,6 +144,12 @@ public class Bill {
 				+ ", getStartDate()=" + getStartDate() + ", getEndDate()=" + getEndDate() + ", getDueDate()="
 				+ getDueDate() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
 				+ super.toString() + "]";
+	}
+
+
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 

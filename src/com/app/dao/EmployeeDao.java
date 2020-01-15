@@ -33,6 +33,21 @@ public class EmployeeDao implements IEmployeeDao {
 	@Override
 	public List<User> displayDueDateExpiredCustomers(LocalDate dueDate) {
 
+		String jpql = "select b from Bill b where b.dueDate < :dueDate and b.status = 'pending'";
+		List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("dueDate", dueDate)
+				.getResultList();
+		List<User> expiredUser = new ArrayList<>();
+
+		for (Bill bills : user_id) 
+		{
+			expiredUser.add(bills.getUserBillDeatils());
+		}
+		return expiredUser;
+	}
+	/*
+	 * @Override
+	public List<User> displayDueDateExpiredCustomers(LocalDate dueDate) {
+
 		String jpql = "select b from Bill b where b.dueDate < :dueDate";
 		List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("dueDate", dueDate)
 				.getResultList();
@@ -44,6 +59,7 @@ public class EmployeeDao implements IEmployeeDao {
 		}
 		return expiredUser;
 	}
+	 */
 
 	@Override
 	public User displaySingleCustomer(int id) {

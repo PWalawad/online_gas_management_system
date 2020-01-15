@@ -10,7 +10,9 @@ public class Address extends AbstractEntity {
 	
 	private String city,state;
 	private User users;
+
 	
+
 
 	public Address() {
 		
