@@ -2,8 +2,10 @@ package com.app.dao;
 
 import java.util.List;
 
-
+import com.app.pojos.Address;
+import com.app.pojos.Bankdeatils;
 import com.app.pojos.Bill;
+import com.app.pojos.User;
 
 
 public interface ICustomerDao 
@@ -11,5 +13,8 @@ public interface ICustomerDao
 	public List<Bill> allBills(Integer id);
 	public List<Bill> myPendingaBills(Integer id);
 	public List<Bill> myPaidBills(Integer id);
+	public void registerMeOnline(User newUser);
+	public void addbankdetails(Bankdeatils b,Integer id);
+	public void addAddress(Address a, Integer id);
 	
 }

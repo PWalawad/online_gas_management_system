@@ -147,24 +147,44 @@ public class User
 				+ "]";
 	}
 
-	
-	public User(Integer id, String password, String name, String email, UserType roll, Address add, Bankdeatils bank,
-			List<Bill> bills) {
+	//******************************************************
+	public User(Integer id,  String name, String email,String password) {
 		super();
 		this.id = id;
 		this.password = password;
 		this.name = name;
 		this.email = email;
+		
+	
+	}
+	
+	public User(Address add)
+	{
+		this.add=add;
+	}
+	public User(Bankdeatils b)
+	{
+		this.bank=b;
+	}
+	//******************************************************
+	/*
+	 * Adder and remover Methods
+	 */
+	
+
+	public User(Integer id, String password, String name, String email, String confirmPassword, UserType roll,
+			Address add, Bankdeatils bank, List<Bill> bills) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.name = name;
+		this.email = email;
+		this.confirmPassword = confirmPassword;
 		this.roll = roll;
 		this.add = add;
 		this.bank = bank;
 		this.bills = bills;
 	}
-	
-	/*
-	 * Adder and remover Methods
-	 */
-	
 
 	public void addAddress(Address a) {
 		// student ---> address
