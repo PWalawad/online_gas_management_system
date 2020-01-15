@@ -14,6 +14,12 @@ public class Address extends AbstractEntity {
 	
 
 
+	@Override
+	public String toString() {
+		return "Address [city=" + city + ", state=" + state + ", users=" + users + ", getUsers()=" + getUsers()
+				+ ", getCity()=" + getCity() + ", getState()=" + getState() + ", getId()=" + getId() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+	}
 	public Address() {
 		
 	}

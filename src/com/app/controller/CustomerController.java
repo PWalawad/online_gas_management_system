@@ -30,7 +30,7 @@ public class CustomerController {
 		
 	}
 	@GetMapping("/mybills/{id}")
-	public List<Bill>  allBills(@PathVariable("id") Integer id)
+	public List<Bill> allBills(@PathVariable("id") Integer id)
 	{
 		return dao1.allBills(id);	
 	}

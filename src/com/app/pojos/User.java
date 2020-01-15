@@ -28,7 +28,11 @@ public class User
     private List<Bill> bills= new ArrayList<>();
 	
 	
-    public User() {
+    public void setBank(Bankdeatils bank) {
+		this.bank = bank;
+	}
+
+	public User() {
 		
 	}
 /*
