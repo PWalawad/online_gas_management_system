@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dao.IEmployeeDao;
+import com.app.model.BillModel;
 import com.app.pojos.Bill;
 import com.app.pojos.User;
 
@@ -35,11 +36,11 @@ public class EmployeeController {
 	public List<User> allCustomers() {
 		return dao.displayAllCustomers();
 	}
+	
 
-	@GetMapping("/default")
-	public List<User> dueDateExpiredCustomers() {
-		
-		
+	/*@GetMapping("/default")
+	public List<User> dueDateExpiredCustomers() 
+	{
 		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	        String date = "2019-06-05";
@@ -47,42 +48,34 @@ public class EmployeeController {
 	        LocalDate localDate = LocalDate.parse(date, formatter);
 			return dao.displayDueDateExpiredCustomers(localDate);
 			
-	}
-	/*
-	 public String processLoginForm(@RequestParam String email, 
-			@RequestParam(name = "password") String pass, Model map,
-			HttpSession hs, RedirectAttributes flashMap) {
-		
-		System.out.println("in process login form " + email + " " + pass);
-		
-		try {
-			
-			Vendor v = dao.validateUser(email, pass);
-			
-			flashMap.addFlashAttribute("mesg", v.getUserRole() + " : Login Successful");
-			
-			hs.setAttribute("user_dtls", v);// entire session
-
-			if (v.getUserRole().equals(Role.ADMIN))
-				return "redirect:/admin/list";
-			
-			return "redirect:/vendor/details";
-
-		} catch (RuntimeException e) {
-			
-			map.addAttribute("mesg", "Invalid Login , Pls retry ...");
-			return "/user/login";
-
-		}
-
-	}
-		
-		
-		
-		
-	}
-	*/
+	}*/
 	
+	  @RequestMapping(value="/default/{searchByDate}",method=RequestMethod.GET)
+	public List<User> dueDateExpiredCustomers(@PathVariable String searchByDate) 
+	{
+		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+	        LocalDate localDate = LocalDate.parse(searchByDate, formatter);
+			return dao.displayDueDateExpiredCustomers(localDate);
+			
+	}
+	  @RequestMapping(value="/{id}",method=RequestMethod.GET)
+	  
+		  public ResponseEntity<?> getCustomerdeatils(@PathVariable("id") int id)
+			{
+				User u=dao.displaySingleCustomer(id);
+				if(u==null)
+					return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+				return new  ResponseEntity<User>(u,HttpStatus.OK);
+			}
+	  
+	  /*
+		 * @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+	public List<Brand> getBrand(@PathVariable String name) {
+	    return brandService.getSome(name);
+	}
+		 */
+	/*
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getCustomerdeatils(@PathVariable int id)
 	{
@@ -91,12 +84,22 @@ public class EmployeeController {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		return new  ResponseEntity<User>(u,HttpStatus.OK);
 	}
-	
-	@PostMapping
-	public void addNextMonthBillOfCustomer(@RequestBody Bill b)
+	*/
+	  
+	@PostMapping("{id}")
+	public void addNextMonthBillOfCustomer(@RequestBody BillModel b,@PathVariable("id") Integer id)
 	{
 		//User u=dao.displaySingleCustomer(id);
-		dao.InsertNextMonthBill(b);
-	}
+		Bill entity = new Bill();
+		entity.setAmount(b.getAmount());
+		entity.setBillNo(b.getBillNo());
+		entity.setStartDate(b.getStartDate());
+		entity.setDueDate(b.getDueDate());
+		entity.setEndDate(b.getEndDate());
+		User persistedUser = dao.displaySingleCustomer(id);
+		persistedUser.addBill(entity);
+		dao.insertNextMonthBill(persistedUser);
+
+		}
 	
 }

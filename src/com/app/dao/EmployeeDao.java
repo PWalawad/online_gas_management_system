@@ -11,61 +11,58 @@ import java.util.List;
 
 import com.app.pojos.Bill;
 import com.app.pojos.User;
+
 @Repository
 @Transactional
 public class EmployeeDao implements IEmployeeDao {
-  
+
 	@Autowired
 	private SessionFactory sf;
-	
-	public EmployeeDao()  {
+
+	public EmployeeDao() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public List<User> displayAllCustomers() {
-		String jpql="select u from User u where u.roll='customer'";
-		
+		String jpql = "select u from User u where u.roll='customer'";
+
 		return sf.getCurrentSession().createQuery(jpql, User.class).getResultList();
 	}
 
 	@Override
-	public List<User> displayDueDateExpiredCustomers(LocalDate endDate) 
-	{
-		
-		String jpql="select b from Bill b where b.endDate > :endDate";
-		List<Bill> user_id=sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("endDate", endDate).getResultList();
-		List<User> expiredUser=new ArrayList<>();
-		
-		for (Bill bills : user_id)
+	public List<User> displayDueDateExpiredCustomers(LocalDate dueDate) {
+
+		String jpql = "select b from Bill b where b.dueDate < :dueDate";
+		List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("dueDate", dueDate)
+				.getResultList();
+		List<User> expiredUser = new ArrayList<>();
+
+		for (Bill bills : user_id) 
 		{
 			expiredUser.add(bills.getUserBillDeatils());
-//		  String jpql2="select u from User u where u.bills = :bills";
-//		  User u=sf.getCurrentSession().createQuery(jpql2,User.class).setParameter("bills", bills.getEndDate()).getSingleResult();
-//		  expiredUser.add(u);
-         }
+		}
 		return expiredUser;
 	}
 
 	@Override
 	public User displaySingleCustomer(int id) {
-		String jpql="select u from User u where u.id=:id";
-		User u=sf.getCurrentSession().createQuery(jpql,User.class).setParameter("id", id).getSingleResult();
+		String jpql = "select u from User u where u.id=:id";
+		User u = sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
 		return u;
 	}
 
 	@Override
-	public int InsertNextMonthBill(Bill b) {
-		
-		
-		sf.getCurrentSession().persist(b);
+	public int insertNextMonthBill(User u) {
+
+		sf.getCurrentSession().persist(u);
 		return 1;
 	}
-	
+
 	@Override
-	public void SendEmailToCustomers() {
-		
-		
+	public void sendEmailToCustomers() {
+
 	}
 
+	
 }

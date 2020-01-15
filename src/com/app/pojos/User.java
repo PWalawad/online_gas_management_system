@@ -177,7 +177,7 @@ public class User
 	
 	public void addBill(Bill b) {
 		bills.add(b);
-		b.setUserBillDeatils(this);// student-->course
+		b.setUserBillDeatils(this);// bill-->user
 
 	}
 
