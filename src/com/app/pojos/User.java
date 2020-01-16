@@ -16,6 +16,10 @@ public class User
 	@JsonProperty(value="id")
 	private Integer id;
 	private String password;
+	
+	@JsonProperty(value="consumer_Employee_No")
+    private Integer consumer_Employee_No;
+
 
 	private String name;
 	private String email;
@@ -41,15 +45,21 @@ public class User
  * =====================================================================
  */
     
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	@JsonIgnore
 	public Integer getId() {
 		return id;
 	}
+	
+   @JsonIgnore
+  @Column (name="Consumer_Employee_No",unique =true)
+	public Integer getConsumer_Employee_No() {
+		return consumer_Employee_No;
+	}
 
-    
+	
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	public Address getAdd() {
 		return add;
@@ -104,6 +114,10 @@ public class User
 	 * Other Setters
 	 * =================================================
 	 */
+	
+	public void setConsumer_Employee_No(Integer consumer_Employee_No) {
+		this.consumer_Employee_No = consumer_Employee_No;
+	}
 	
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;

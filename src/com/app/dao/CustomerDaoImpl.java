@@ -3,6 +3,8 @@ package com.app.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -92,6 +94,36 @@ public class CustomerDaoImpl implements ICustomerDao {
 		newUser.addAddress(a);
 		
 		
+	}
+
+	@Override
+	public Integer paybill(Integer id)
+	{
+		String jpql="select u from User u where u.id = :id";
+		try
+		{
+			User user=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
+			   
+			
+		           List<Bill> unpaidBill=this.myPendingaBills(id);
+					int Total=0;
+					for(Bill singleUnPaid : unpaidBill)
+					{
+						Total=(int) (Total+singleUnPaid.getAmount());
+						
+					}
+					 if(Total==0)
+						return 0;
+					 else
+					    return Total;
+				
+		}
+		catch(NoResultException nre)
+		{
+			return 404;
+		}
+			
+	
 	}
 
 	

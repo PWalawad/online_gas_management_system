@@ -16,5 +16,6 @@ public interface ICustomerDao
 	public void registerMeOnline(User newUser);
 	public void addbankdetails(Bankdeatils b,Integer id);
 	public void addAddress(Address a, Integer id);
+	public Integer paybill(Integer id);
 	
 }
