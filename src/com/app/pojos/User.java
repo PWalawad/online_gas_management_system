@@ -67,7 +67,7 @@ public class User
 
 
 	@OneToMany(mappedBy = "userBillDeatils",
-			cascade = CascadeType.ALL ,fetch=FetchType.EAGER , orphanRemoval = true)
+			cascade = CascadeType.ALL ,fetch=FetchType.EAGER )
 	public List<Bill> getBills() {
 		return bills;
 	}

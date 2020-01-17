@@ -1,5 +1,6 @@
 package com.app.dao;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.model.BillModel;
 import com.app.pojos.Address;
 import com.app.pojos.Bankdeatils;
 import com.app.pojos.Bill;
@@ -48,7 +50,7 @@ public class CustomerDaoImpl implements ICustomerDao {
 	{
 try {
 
-		String jpql = "select b from Bill b where b.status = 'pending'";
+		String jpql = "select b from Bill b where b.status ='pending'";
 		List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).getResultList();
 		List<Bill> allPendingBills=new ArrayList<>();
 
@@ -150,30 +152,25 @@ try {
 	}
 
 	@Override
-	public Integer paybill(Integer id)
+	public BillModel paybill(Integer id)
 	{
-		String jpql="select u from User u where u.id = :id";
+		String jpql="select b from Bill b where b.id = :id";
+		BillModel bm=new BillModel();
+		
 		try
 		{
-			User user=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
-			   
-			
-		           List<Bill> unpaidBill=this.myPendingaBills(id);
-					int Total=0;
-					for(Bill singleUnPaid : unpaidBill)
-					{
-						Total=(int) (Total+singleUnPaid.getAmount());
-						
-					}
-					 if(Total==0)
-						return 0;
-					 else
-					    return Total;
-				
+			Bill unPaid=sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("id", id).getSingleResult();
+		
+					unPaid.setStatus("done");
+					bm.setAmount(unPaid.getAmount());
+					bm.setBillNo(unPaid.getBillNo());
+					bm.setStatus(unPaid.getStatus());
+					return bm;
+					 
 		}
 		catch(NoResultException nre)
 		{
-			return 404;
+			return null;
 		}
 			
 	

@@ -88,7 +88,7 @@ public class EmployeeDao implements IEmployeeDao {
 	@Override
 	public int insertNextMonthBill(User u) {
 
-		sf.getCurrentSession().persist(u);
+		sf.getCurrentSession().update(u);
 		return 1;
 	}
 

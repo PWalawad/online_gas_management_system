@@ -87,33 +87,40 @@ public class EmployeeController {
 	*/
 	  
 	@PostMapping("/{id}")
-	public Bill addNextMonthBillOfCustomer(@RequestBody Bill b,@PathVariable("id") Integer id)
+	public Bill addNextMonthBillOfCustomer(@RequestBody BillModel b,@PathVariable("id") Integer id)
 	{
 		//User u=dao.displaySingleCustomer(id);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		LocalDate d=b.getDueDate();
-		String sDueDate = d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		LocalDate dueDate = LocalDate.parse(sDueDate, formatter);
-		
-		LocalDate e=b.getEndDate();
-		String sEndDate = e.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		LocalDate endDate = LocalDate.parse(sEndDate, formatter);
-		
-		LocalDate s=b.getDueDate();
-		String sStartDate = s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		LocalDate startDate = LocalDate.parse(sStartDate, formatter);
-		
-		
-		b.setDueDate(dueDate);
-		b.setEndDate(endDate);
-		b.setStartDate(startDate);
-		
+		Bill entity = new Bill( b.getAmount(), getLocalDate(b.getStartDate()),
+				getLocalDate(b.getEndDate()), getLocalDate(b.getDueDate()),b.getStatus());
 		User persistedUser = dao.displaySingleCustomer(id);
-		persistedUser.addBill(b);
-		dao.insertNextMonthBill(persistedUser);
-		return b;
+		
+		
+		/////
+		
+		List<Bill> allBills=persistedUser.getBills();
+		for(Bill single : allBills)
+		{
+			if(single.getStartDate().equals(getLocalDate(b.getStartDate())))
+			{	
+			   return null;
+			}
+			
+			persistedUser.addBill(entity);
+			dao.insertNextMonthBill(persistedUser);
+			
+		}
+		
+		
+		return entity;
 
 		}
+	
+	
+	public LocalDate getLocalDate(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		return LocalDate.parse(date, formatter);
+	}
 	
 }

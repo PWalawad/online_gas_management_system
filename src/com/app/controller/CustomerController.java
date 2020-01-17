@@ -76,15 +76,12 @@ public class CustomerController {
 		return 1;
 		
 	}
+	
 	@GetMapping("/paybill/{id}")
-	public String paybill(@PathVariable("id") Integer id)
+	public BillModel paybill(@PathVariable("id") Integer id)
 	{
-		Integer result=dao1.paybill(id);
-		if(result.equals(0))
-			return "You dont have any pending bill";
-		else if(result.equals(404))
-		   return "You are not registred customer";
-		else
-		   return dao1.paybill(id).toString();
+		BillModel bm=dao1.paybill(id);
+		return bm;
+		
 	}
 }

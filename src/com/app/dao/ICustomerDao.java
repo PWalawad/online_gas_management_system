@@ -2,6 +2,7 @@ package com.app.dao;
 
 import java.util.List;
 
+import com.app.model.BillModel;
 import com.app.pojos.Address;
 import com.app.pojos.Bankdeatils;
 import com.app.pojos.Bill;
@@ -16,6 +17,6 @@ public interface ICustomerDao
 	public User registerMeOnline(User newUser);
 	public Bankdeatils addbankdetails(Bankdeatils b,Integer id);
 	public Address addAddress(Address a, Integer id);
-	public Integer paybill(Integer id);
+	public BillModel paybill(Integer id);
 	
 }

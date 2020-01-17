@@ -20,7 +20,7 @@ public class Bill {
 	private LocalDate dueDate;
 	private String status;
 	private LocalDate paymentDoneDate;
-	
+
 	//mapping 
     private User userBillDeatils;
 		
@@ -124,9 +124,7 @@ public class Bill {
 
 
 
-	public Bill(Integer billNo, float amount, LocalDate startDate, LocalDate endDate, LocalDate dueDate) {
-		super();
-		this.billNo = billNo;
+	public Bill(float amount, LocalDate startDate, LocalDate endDate, LocalDate dueDate) {
 		this.amount = amount;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -135,6 +133,14 @@ public class Bill {
 	}
 
 
+
+	public Bill(float amount, LocalDate startDate, LocalDate endDate, LocalDate dueDate, String status) {
+		this.amount = amount;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.dueDate = dueDate;
+		this.status=status;
+	}
 
 	@Override
 	public String toString() {
