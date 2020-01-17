@@ -26,15 +26,27 @@ public class CustomerDaoImpl implements ICustomerDao {
 	@Override
 	public List<Bill> allBills(Integer id) 
 	{
-		String jpql="select u from  User u where u.id = :id ";
+       try 
+		{
+    	   
+    	   String jpql="select u from  User u where u.id = :id ";
 		User u=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
 		return u.getBills();
+			
+		}
+		catch (NoResultException nre ) 
+		{
+	        return null;
+			
+		}
+		
 		
 	}
 
 	@Override
 	public List<Bill> myPendingaBills(Integer id)
 	{
+try {
 
 		String jpql = "select b from Bill b where b.status = 'pending'";
 		List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).getResultList();
@@ -50,49 +62,90 @@ public class CustomerDaoImpl implements ICustomerDao {
 					continue;
 		}
 		return allPendingBills;
+   }
+	catch (NoResultException nre ) 
+	{
+	    return null;
+		
 	}
+}
 
 	@Override
 	public List<Bill> myPaidBills(Integer id) {
-		String jpql = "select b from Bill b where b.status = 'done'";
-		List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).getResultList();
-		List<Bill> allDoneBills=new ArrayList<>();
-
-		for (Bill bills : user_id) 
+		try
 		{
-			Integer fingId=bills.getUserBillDeatils().getId();
-			System.out.println("id="+id);
-				if(fingId.equals(id))
-					allDoneBills.add(bills);
-				else
-					continue;
+			
+			String jpql = "select b from Bill b where b.status = 'done'";
+			List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).getResultList();
+			List<Bill> allDoneBills=new ArrayList<>();
+	
+			for (Bill bills : user_id) 
+			{
+				Integer fingId=bills.getUserBillDeatils().getId();
+				System.out.println("id="+id);
+					if(fingId.equals(id))
+						allDoneBills.add(bills);
+					else
+						continue;
+			}
+			return allDoneBills;
+	    }
+		catch (NoResultException nre ) 
+		{
+	        return null;
+			
 		}
-		return allDoneBills;
 	}
 
 	@Override
-	public void registerMeOnline(User newUser)
+	public User registerMeOnline(User newUser)
 	{
-		newUser.setRoll(UserType.customer);
-		sf.getCurrentSession().persist(newUser);
+		try
+		{
+			newUser.setRoll(UserType.customer);
+			sf.getCurrentSession().persist(newUser);
+			return newUser;
+		}
+		
+		catch (NoResultException nre ) 
+		{
+	        return null;
+			
+		}
 	}
 
 	@Override
-	public void addbankdetails(Bankdeatils b,Integer id) 
+	public Bankdeatils addbankdetails(Bankdeatils b,Integer id) 
 	{
-		String jpql="select u from User u where u.id = :id";
+		
+		try{String jpql="select u from User u where u.id = :id";
 		User newUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
 		newUser.setBank(b);
+		return b;
+	}
+		catch (NoResultException nre ) 
+		{
+	        return null;
+			
+		}
 		
 	}
 
 	@Override
-	public void addAddress(Address a, Integer id) 
+	public Address addAddress(Address a, Integer id) 
 	{
-		String jpql="select u from User u where u.id = :id";
-		User newUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
-		newUser.addAddress(a);
-		
+			try{
+				String jpql="select u from User u where u.id = :id";
+			User newUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
+			newUser.addAddress(a);
+			return a;
+			
+		}
+		catch (NoResultException nre ) 
+		{
+	        return null;
+			
+		}
 		
 	}
 

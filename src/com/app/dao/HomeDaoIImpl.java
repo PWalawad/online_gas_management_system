@@ -25,12 +25,15 @@ public class HomeDaoIImpl implements IHomeDao
 			String password=u.getPassword();
 			String jpql="select u from User u where u.consumer_Employee_No =:consumer_Employee_No and u.password=:password";
 			User findUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("consumer_Employee_No", consumer_Employee_No).setParameter("password",password).getSingleResult();
+			System.out.println(findUser.getRoll());
 			
 				return findUser;
 			
 		}
 		catch (NoResultException nre ) {
+			System.out.println("null yetey yaar fucking value");
 			return null;
+			
 		}
 		
 		

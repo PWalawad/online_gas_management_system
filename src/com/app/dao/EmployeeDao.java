@@ -25,24 +25,34 @@ public class EmployeeDao implements IEmployeeDao {
 
 	@Override
 	public List<User> displayAllCustomers() {
-		String jpql = "select u from User u where u.roll='customer'";
+		try{String jpql = "select u from User u where u.roll='customer'";
 
-		return sf.getCurrentSession().createQuery(jpql, User.class).getResultList();
+		return sf.getCurrentSession().createQuery(jpql, User.class).getResultList();}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
 	public List<User> displayDueDateExpiredCustomers(LocalDate dueDate) {
 
-		String jpql = "select b from Bill b where b.dueDate < :dueDate and b.status = 'pending'";
-		List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("dueDate", dueDate)
-				.getResultList();
-		List<User> expiredUser = new ArrayList<>();
-
-		for (Bill bills : user_id) 
-		{
-			expiredUser.add(bills.getUserBillDeatils());
+		try
+			{
+				String jpql = "select b from Bill b where b.dueDate < :dueDate and b.status = 'pending'";
+			List<Bill> user_id = sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("dueDate", dueDate)
+					.getResultList();
+			List<User> expiredUser = new ArrayList<>();
+	
+			for (Bill bills : user_id) 
+			{
+				expiredUser.add(bills.getUserBillDeatils());
+			}
+			return expiredUser;
+	  }
+		catch (Exception e) {
+			return null;
 		}
-		return expiredUser;
+		
 	}
 	/*
 	 * @Override
@@ -63,9 +73,16 @@ public class EmployeeDao implements IEmployeeDao {
 
 	@Override
 	public User displaySingleCustomer(int id) {
-		String jpql = "select u from User u where u.id=:id";
+	
+		try{
+			String jpql = "select u from User u where u.id=:id";
+		
 		User u = sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
 		return u;
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override

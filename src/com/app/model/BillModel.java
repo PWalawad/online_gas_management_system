@@ -55,6 +55,21 @@ public class BillModel {
 		this.billNo = billNo;
 	}
 
+	public BillModel() {
+		
+	}
+
+	public BillModel(Integer billNo, float amount, LocalDate startDate, LocalDate endDate, LocalDate dueDate,
+			String status) {
+		super();
+		this.billNo = billNo;
+		this.amount = amount;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.dueDate = dueDate;
+		this.status = status;
+	}
+
 	public void setAmount(float amount) {
 		this.amount = amount;
 	}
