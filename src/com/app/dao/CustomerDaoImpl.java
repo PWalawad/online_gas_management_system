@@ -129,13 +129,13 @@ try {
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public Bankdeatils addbankdetails(Bankdeatils b,Integer id) 
+	public User addbankdetails(Bankdeatils b,Integer id) 
 	{
 		
 		try{String jpql="select u from User u where u.id = :id";
 		User newUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
 		newUser.setBank(b);
-		return b;
+		return newUser;
 	}
 		catch (NoResultException nre ) 
 		{
@@ -145,14 +145,38 @@ try {
 		
 	}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	@Override
-	public Address addAddress(Address a, Integer id) 
+	public User forGetPassword(User us)
+	{
+		Integer consumer_Employee_No=us.getConsumer_Employee_No();
+		String email=us.getEmail();
+		System.out.println(us.getPassword());
+		
+		String jpql="select u from User u where u.consumer_Employee_No = :consumer_Employee_No and u.email=:email";
+		User newUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("consumer_Employee_No", consumer_Employee_No).setParameter("email", email).getSingleResult();
+		if(newUser!=null)
+		{
+			String saltCode=PasswordUtils.getSalt(6);
+			newUser.setSaltPassword(saltCode);
+			
+			String encyptedPassword=PasswordUtils.generateSecurePassword(us.getPassword(), saltCode);
+			newUser.setPassword(encyptedPassword);
+			
+			sf.getCurrentSession().update(newUser);
+		}
+		return null;
+	}
+	
+	/////////////////////////////////////////////////////////////////////
+	@Override
+	public User addAddress(Address a, Integer id) 
 	{
 			try{
 				String jpql="select u from User u where u.id = :id";
 			User newUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("id", id).getSingleResult();
 			newUser.addAddress(a);
-			return a;
+			return newUser;
 			
 		}
 		catch (NoResultException nre ) 

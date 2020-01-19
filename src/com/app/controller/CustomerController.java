@@ -52,7 +52,14 @@ public class CustomerController {
 		return dao1.myPaidBills(id);	
 	}
 	
+	@PostMapping("/forgetpassword")
 	
+	public User forGetPassword(@RequestBody User u)
+	{
+		User un =dao1.forGetPassword(u);
+		return un;
+		
+	}
 	//========================================================
 	@PostMapping("/registerme")
 	public User registerMeOnline(@RequestBody User b) throws UnsupportedEncodingException
@@ -64,20 +71,20 @@ public class CustomerController {
 		
 	}
 	@PostMapping("/addbankdetails/{id}")
-	public Integer addbankdetails(@RequestBody Bankdeatils b,@PathVariable("id") Integer id)
+	public User addbankdetails(@RequestBody Bankdeatils b,@PathVariable("id") Integer id)
 	{
 		
-		dao1.addbankdetails(b,id);
-		return 1;
+		User u=dao1.addbankdetails(b,id);
+		return u;
 		
 	}
 	
 	@PostMapping("/addAddress/{id}")
-	public Integer addAddress(@RequestBody Address a,@PathVariable("id") Integer id)
+	public User addAddress(@RequestBody Address a,@PathVariable("id") Integer id)
 	{
 		
-		dao1.addAddress(a,id);
-		return 1;
+		User u=dao1.addAddress(a,id);
+		return u;
 		
 	}
 	

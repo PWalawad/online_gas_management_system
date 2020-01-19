@@ -15,8 +15,9 @@ public interface ICustomerDao
 	public List<Bill> myPendingaBills(Integer id);
 	public List<Bill> myPaidBills(Integer id);
 	public User registerMeOnline(User newUser);
-	public Bankdeatils addbankdetails(Bankdeatils b,Integer id);
-	public Address addAddress(Address a, Integer consumer_Employee_No);
-	public BillModel paybill(Integer id);
+	public User addbankdetails(Bankdeatils b,Integer id);
+	public User addAddress(Address a, Integer consumer_Employee_No);
+	public BillModel  paybill(Integer id);
+	User forGetPassword(User u);
 	
 }
