@@ -20,7 +20,7 @@ public class User
 	@JsonProperty(value="consumer_Employee_No")
     private Integer consumer_Employee_No;
 
-
+    private String saltPassword;
 	private String name;
 	private String email;
 	private String confirmPassword;
@@ -60,14 +60,14 @@ public class User
 	}
 
 	
-    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch=FetchType.EAGER,orphanRemoval = true)
 	public Address getAdd() {
 		return add;
 	}
 
 
 	@OneToMany(mappedBy = "userBillDeatils",
-			cascade = CascadeType.ALL ,fetch=FetchType.EAGER )
+			cascade = CascadeType.ALL ,fetch=FetchType.EAGER ,orphanRemoval = true)
 	public List<Bill> getBills() {
 		return bills;
 	}
@@ -88,6 +88,10 @@ public class User
 		return roll;
 	}
 	
+	public String getSaltPassword()
+	{
+		return saltPassword;
+	}
 	@Transient //skip from persistence--no col generation
 	public String getConfirmPassword() {
 		return confirmPassword;
@@ -221,6 +225,10 @@ public class User
 	public void removeBill(Bill b) {
 		bills.remove(b);
 		b.setUserBillDeatils(null);
+	}
+
+	public void setSaltPassword(String saltPassword) {
+		this.saltPassword = saltPassword;
 	}
 	
 }

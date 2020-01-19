@@ -1,10 +1,12 @@
 package com.app.controller;
-
-
+import java.io.UnsupportedEncodingException;
+import java.lang.String;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,7 @@ import com.app.pojos.Address;
 import com.app.pojos.Bankdeatils;
 import com.app.pojos.Bill;
 import com.app.pojos.User;
-import com.app.pojos.UserType;
+
 
 
 @CrossOrigin
@@ -50,13 +52,15 @@ public class CustomerController {
 		return dao1.myPaidBills(id);	
 	}
 	
+	
 	//========================================================
-	@PostMapping
-	public Integer registerMeOnline(@RequestBody User b,@PathVariable("id") Integer id)
+	@PostMapping("/registerme")
+	public User registerMeOnline(@RequestBody User b) throws UnsupportedEncodingException
 	{
 		
-		dao1.registerMeOnline(b);
-		return null;
+		//user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
+		User u=dao1.registerMeOnline(b);
+		return u;
 		
 	}
 	@PostMapping("/addbankdetails/{id}")

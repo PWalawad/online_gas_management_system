@@ -1,6 +1,7 @@
 package com.app.dao;
+import com.app.passwordencryption.*;
 
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.app.pojos.Bankdeatils;
 import com.app.pojos.Bill;
 import com.app.pojos.User;
 import com.app.pojos.UserType;
+import com.app.pojos.offlineDatabaseOfUser;
 
 @Repository
 @Transactional
@@ -24,7 +26,8 @@ public class CustomerDaoImpl implements ICustomerDao {
 
 	@Autowired
 	private SessionFactory sf;
-
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public List<Bill> allBills(Integer id) 
 	{
@@ -44,7 +47,7 @@ public class CustomerDaoImpl implements ICustomerDao {
 		
 		
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public List<Bill> myPendingaBills(Integer id)
 	{
@@ -71,7 +74,7 @@ try {
 		
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public List<Bill> myPaidBills(Integer id) {
 		try
@@ -98,24 +101,33 @@ try {
 			
 		}
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public User registerMeOnline(User newUser)
 	{
-		try
-		{
-			newUser.setRoll(UserType.customer);
-			sf.getCurrentSession().persist(newUser);
-			return newUser;
-		}
 		
-		catch (NoResultException nre ) 
-		{
-	        return null;
+			Integer consumer_Employee_No=newUser.getConsumer_Employee_No();
+			String oldjpql="select o from offlineDatabaseOfUser o where o.consumer_Employee_No =:consumer_Employee_No";
+			offlineDatabaseOfUser oldUser=sf.getCurrentSession().createQuery(oldjpql, offlineDatabaseOfUser.class).setParameter("consumer_Employee_No",consumer_Employee_No).getSingleResult();
+			System.out.println(oldUser.getConsumer_Employee_No());
+			if(oldUser.getConsumer_Employee_No().equals(newUser.getConsumer_Employee_No()))
+			{
+				newUser.setRoll(UserType.customer);
+				String saltCode=PasswordUtils.getSalt(6);
+				newUser.setSaltPassword(saltCode);
+				System.out.println(saltCode);
+				String encyptedPassword=PasswordUtils.generateSecurePassword(newUser.getPassword(), saltCode);
+	
+				newUser.setPassword(encyptedPassword);
+				
+				sf.getCurrentSession().persist(newUser);
+				return newUser;
+			}
 			
-		}
+			else
+				return null;
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Bankdeatils addbankdetails(Bankdeatils b,Integer id) 
 	{
@@ -132,7 +144,7 @@ try {
 		}
 		
 	}
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Address addAddress(Address a, Integer id) 
 	{
@@ -150,7 +162,7 @@ try {
 		}
 		
 	}
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public BillModel paybill(Integer id)
 	{
@@ -162,6 +174,7 @@ try {
 			Bill unPaid=sf.getCurrentSession().createQuery(jpql, Bill.class).setParameter("id", id).getSingleResult();
 		
 					unPaid.setStatus("done");
+					unPaid.setPaymentDoneDate(LocalDate.now());
 					bm.setAmount(unPaid.getAmount());
 					bm.setBillNo(unPaid.getBillNo());
 					bm.setStatus(unPaid.getStatus());
@@ -176,6 +189,6 @@ try {
 	
 	}
 
-	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

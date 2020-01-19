@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.passwordencryption.PasswordUtils;
 import com.app.pojos.User;
 import com.app.pojos.UserType;
+
+import sun.security.util.Password;
 
 @Repository
 @Transactional
@@ -22,16 +25,22 @@ public class HomeDaoIImpl implements IHomeDao
 	{
 		try {
 			Integer consumer_Employee_No=u.getConsumer_Employee_No();
-			String password=u.getPassword();
-			String jpql="select u from User u where u.consumer_Employee_No =:consumer_Employee_No and u.password=:password";
-			User findUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("consumer_Employee_No", consumer_Employee_No).setParameter("password",password).getSingleResult();
-			System.out.println(findUser.getRoll());
 			
+		
+			String jpql="select u from User u where u.consumer_Employee_No =:consumer_Employee_No";
+			User findUser=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("consumer_Employee_No", consumer_Employee_No).getSingleResult();
+			String saltCode=findUser.getSaltPassword();
+			String toVerifypassword=u.getPassword();
+			System.out.println(saltCode+""+toVerifypassword);
+			String encrPassFromDatabase=PasswordUtils.generateSecurePassword(toVerifypassword, saltCode);
+			if(encrPassFromDatabase.equals(findUser.getPassword()))
 				return findUser;
+			else
+				return	null;
 			
 		}
 		catch (NoResultException nre ) {
-			System.out.println("null yetey yaar fucking value");
+			
 			return null;
 			
 		}
