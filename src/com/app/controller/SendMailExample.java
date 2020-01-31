@@ -13,8 +13,8 @@ import javax.mail.internet.MimeMessage;
 public class SendMailExample {
 	public static void main(String[] args) {
 
-		final String username = "padmashri1795@gmail.com";
-		final String password = "SHri@123";
+		final String username = "xyz@gmail.com";
+		final String password = "password";
 
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");
